@@ -6,3 +6,5 @@ export async function seedDatabase() {
 	console.log('Seeding database...');
 	await seed(db, { profile });
 }
+
+seedDatabase();
