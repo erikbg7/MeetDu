@@ -1,6 +1,9 @@
 import { Toaster } from 'sonner';
+import { syncUserOnFirstLogin } from '@/app/meet/actions';
 
 export default async function DiscoveryPage() {
+	await syncUserOnFirstLogin();
+
 	return (
 		<main className="container mx-auto px-4 py-8">
 			<Toaster />
