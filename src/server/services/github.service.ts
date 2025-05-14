@@ -1,0 +1,86 @@
+import { Octokit } from '@octokit/rest';
+import { ProfileInsert } from '@/server/db/schema';
+
+export class GithubApiService {
+	private api: Octokit;
+
+	constructor(accessToken: string) {
+		this.api = new Octokit({ auth: accessToken });
+	}
+
+	async getUserProfile() {
+		const res = await this.api.rest.users.getAuthenticated();
+
+		if (res.status !== 200 || !res.data) {
+			throw new Error('Failed to fetch user profile');
+		}
+
+		return res.data;
+	}
+
+	async getProfileByUsername(username: string) {
+		const res = await this.api.rest.users.getByUsername({
+			username,
+		});
+		if (res.status !== 200 || !res.data) {
+			throw new Error('Failed to fetch user profile');
+		}
+		return res.data;
+	}
+
+	async getFollowedUsers() {
+		const res = await this.api.rest.users.listFollowingForUser({
+			username: 'dawsbot',
+			per_page: 20,
+		});
+		if (res.status !== 200 || !res.data) {
+			throw new Error('Failed to fetch followed users');
+		}
+		return res.data;
+	}
+
+	async followUser(username: string) {
+		const res = await this.api.rest.users.follow({ username });
+
+		if (res.status !== 204) {
+			throw new Error('Failed to follow user');
+		}
+
+		return res.data;
+	}
+
+	async isFollowing(username: string) {
+		try {
+			const response =
+				await this.api.rest.users.checkPersonIsFollowedByAuthenticated({
+					username,
+				});
+
+			// 204 No Content means the authenticated user is following the target user
+			return response.status === 204;
+			// eslint-disable-next-line
+		} catch (error) {
+			// Error means the authenticated user is not following the target user
+			return false;
+		}
+	}
+
+	static toProfileInsert(
+		profile: Awaited<
+			ReturnType<typeof GithubApiService.prototype.getUserProfile>
+		>,
+	): ProfileInsert {
+		return {
+			id: String(profile.id),
+			githubId: profile.id,
+			username: profile.login || '',
+			name: profile.name || '',
+			bio: profile.bio || '',
+			location: profile.location || '',
+			url: profile.html_url || '',
+			avatar: profile.avatar_url || '',
+			repos: profile.public_repos || 0,
+			// karma: Math.floor(Math.random() * 15), // this is only for testing purposes
+		};
+	}
+}
