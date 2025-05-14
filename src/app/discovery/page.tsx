@@ -12,7 +12,7 @@ async function DiscoveryContent() {
 	await syncUserOnFirstLogin();
 
 	return (
-		<main className="container mx-auto px-4 py-8">
+		<main className="container mx-auto px-12 py-8">
 			<Toaster />
 			<div className="mb-8">
 				<h1 className="mb-2 text-3xl font-bold">Discover Users</h1>

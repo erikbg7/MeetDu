@@ -34,7 +34,7 @@ export class KarmaService {
 		validator: (username: string) => Promise<boolean>,
 		blacklist: PublicProfile['username'][] = [],
 		profiles: PublicProfile[] = [],
-		amount = 6,
+		amount = 8,
 	): Promise<PublicProfile[]> {
 		const topProfiles = await db
 			.select(publicProfileColumns)
