@@ -1,4 +1,7 @@
+import { db } from '@/server/db';
+import { getTableColumns } from 'drizzle-orm';
 import { clerkClient, currentUser } from '@clerk/nextjs/server';
+import { profile, ProfileInsert } from '@/server/db/schema';
 
 export class UserService {
 	constructor(
@@ -30,6 +33,33 @@ export class UserService {
 		return this.user.privateMetadata?.synced === true;
 	}
 
+	get githubId() {
+		const githubAccount = this.user.externalAccounts.find(
+			(account) => account.provider === 'oauth_github',
+		);
+
+		if (!githubAccount) {
+			throw new Error('Github account not found');
+		}
+
+		return githubAccount.externalId;
+	}
+
+	async getOauthToken() {
+		const provider = `github`;
+		const response = await this.client.users.getUserOauthAccessToken(
+			this.user.id,
+			provider,
+		);
+
+		const accessToken = response?.data?.[0]?.token;
+
+		if (!accessToken) {
+			throw new Error('No access token found');
+		}
+		return accessToken;
+	}
+
 	async setAsSynced() {
 		await this.client.users.updateUser(this.user.id, {
 			privateMetadata: {
@@ -37,5 +67,17 @@ export class UserService {
 				synced: true,
 			},
 		});
+	}
+
+	async createProfile(newProfile: ProfileInsert) {
+		const [createProfile] = await db
+			.insert(profile)
+			.values(newProfile)
+			.returning(getTableColumns(profile))
+			.onConflictDoNothing();
+
+		this.setAsSynced();
+
+		return createProfile;
 	}
 }
