@@ -1,7 +1,14 @@
+import { Suspense } from 'react';
 import { Toaster } from 'sonner';
-import { syncUserOnFirstLogin } from '@/app/meet/actions';
+import {
+	followUser,
+	getTopUsers,
+	syncUserOnFirstLogin,
+} from '@/app/discovery/actions';
 
-export default async function DiscoveryPage() {
+import UsersGrid from '@/app/discovery/UsersGrid';
+
+async function DiscoveryContent() {
 	await syncUserOnFirstLogin();
 
 	return (
@@ -14,6 +21,17 @@ export default async function DiscoveryPage() {
 					network
 				</p>
 			</div>
+			<Suspense fallback={<p>Loading profiles...</p>}>
+				<UsersGrid loadUsers={getTopUsers} followUser={followUser} />
+			</Suspense>
 		</main>
+	);
+}
+
+export default async function DiscoveryPage() {
+	return (
+		<Suspense fallback={<p>Loading...</p>}>
+			<DiscoveryContent />
+		</Suspense>
 	);
 }
