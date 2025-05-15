@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin, LinkIcon, GitFork, Zap } from 'lucide-react';
 import { PublicProfile } from '@/server/db/schema';
 import { FollowUserAction } from '@/app/discovery/actions';
-import { FollowButton } from '@/app/discovery/FollowButton';
+import { FollowButton } from '@/components/discovery/follow-button';
 
 export default function UserCard({
 	user,

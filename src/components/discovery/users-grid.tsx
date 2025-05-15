@@ -1,5 +1,5 @@
 import { FollowUserAction, GetTopUsersAction } from '@/app/discovery/actions';
-import UserCard from '@/app/discovery/UserCard';
+import UserCard from '@/components/discovery/user-card';
 
 export default async function UsersGrid({
 	loadUsers,

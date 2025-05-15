@@ -5,7 +5,7 @@ import {
 	syncUserOnFirstLogin,
 } from '@/app/discovery/actions';
 
-import UsersGrid from '@/app/discovery/UsersGrid';
+import UsersGrid from '@/components/discovery/users-grid';
 
 export default async function DiscoveryPage() {
 	const result = await syncUserOnFirstLogin();
