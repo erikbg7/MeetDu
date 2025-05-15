@@ -1,10 +1,11 @@
 'use server';
 
-import { ServerActionResult, failure, success } from '@/lib/server-actions';
+import { z } from 'zod';
+import { PublicProfile } from '@/server/db/schema';
+import { KarmaService } from '@/server/services/karma.service';
 import { GithubApiService } from '@/server/services/github.service';
 import { UserService } from '@/server/services/user.service';
-import { KarmaService } from '@/server/services/karma.service';
-import { PublicProfile } from '@/server/db/schema';
+import { ServerActionResult, failure, success } from '@/lib/server-actions';
 
 async function syncUserOnFirstLogin(): Promise<ServerActionResult<null>> {
 	try {
@@ -24,22 +25,26 @@ async function syncUserOnFirstLogin(): Promise<ServerActionResult<null>> {
 	}
 }
 
+const followUserSchema = z.object({
+	username: z.string().min(1).max(40).trim(),
+});
+
 async function followUser(
-	username: string,
-): Promise<ServerActionResult<number>> {
+	formData: FormData,
+): Promise<ServerActionResult<null>> {
 	try {
+		const data = Object.fromEntries(formData.entries());
+		const { username } = followUserSchema.parse(data);
+
 		const userService = await UserService.init();
 		const accessToken = await userService.getOauthToken();
 
 		const githubApi = new GithubApiService(accessToken);
 		await githubApi.followUser(username);
 
-		const karma = await KarmaService.updateUsersKarma(
-			userService.githubId,
-			username,
-		);
+		await KarmaService.updateUsersKarma(userService.githubId, username);
 
-		return success(karma);
+		return success(null);
 	} catch (error) {
 		return failure(error);
 	}

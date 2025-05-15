@@ -2,9 +2,9 @@
 
 import { toast } from 'sonner';
 import { Check, Loader } from 'lucide-react';
-import { startTransition, useState } from 'react';
+import { useState, useTransition } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn, handleClientSideError } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import type { Profile } from '@/server/db/schema';
 import type { FollowUserAction } from '@/app/discovery/actions';
@@ -15,49 +15,59 @@ type Props = {
 };
 
 export function FollowButton({ username, onSubmit }: Props) {
+	const [isPending, startTransition] = useTransition();
 	const [isFollowing, setIsFollowing] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
 
-	const handleClick = () => {
-		if (isLoading || isFollowing) return;
-		setIsLoading(true);
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		if (isPending || isFollowing) return;
+
+		const form = e.currentTarget as HTMLFormElement;
+		const submitter = (e.nativeEvent as SubmitEvent).submitter;
+		const formData = new FormData(form, submitter);
+
 		startTransition(() => {
-			onSubmit(username)
+			onSubmit(formData)
 				.then((res) => {
 					if (res.success) {
 						setIsFollowing(true);
 						toast.success('Followed successfully');
-						setIsLoading(false);
 					} else {
-						toast.error(res.error);
-						setIsLoading(false);
+						throw new Error(res.error);
 					}
 				})
-				.catch((err) => {
-					console.error('[UNHANDLED ACTION ERROR]:', err);
-					console.log({ err });
-					if (err instanceof Error) {
-						console.error('[UNHANDLED ACTION ERROR]:', err.message);
-						toast.error(err.message);
-						setIsLoading(false);
-					}
-				});
+				.catch(handleClientSideError);
 		});
 	};
 
 	return (
-		<div className="relative flex w-full justify-center">
+		<form
+			onSubmit={handleSubmit}
+			className="relative flex w-full justify-center"
+			aria-disabled={isPending}
+			aria-busy={isPending}
+			aria-label="Follow user"
+			aria-live="polite"
+		>
+			<button name="username" value={username}></button>
+
 			<Button
-				onClick={handleClick}
-				disabled={isLoading}
+				name="username"
+				value={username}
+				disabled={isPending || isFollowing}
+				aria-disabled={isPending || isFollowing}
+				aria-busy={isPending}
+				aria-label="Follow user"
+				aria-live="polite"
 				className={cn(
 					'transition-all duration-300 ease-in-out',
 					isFollowing ? 'w-10 px-0' : 'w-full',
 				)}
 			>
-				{isLoading && <Loader className="animate-spin" size={16} />}
+				{isPending && <Loader className="animate-spin" size={16} />}
 				{isFollowing && <Check size={16} />}
-				{!isFollowing && !isLoading && (
+				{!isFollowing && !isPending && (
 					<span className="flex items-center gap-2 text-sm font-semibold">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -77,6 +87,6 @@ export function FollowButton({ username, onSubmit }: Props) {
 					</span>
 				)}
 			</Button>
-		</div>
+		</form>
 	);
 }

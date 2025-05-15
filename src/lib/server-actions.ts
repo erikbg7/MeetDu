@@ -6,27 +6,36 @@ type ServerActionSuccess<T> = { success: true; data: T };
 type ServerActionFailure = { success: false; error: string };
 type ServerActionResult<T> = ServerActionSuccess<T> | ServerActionFailure;
 
+function logError(ctx: string, error: unknown): void {
+	console.error(`[${ctx} ERROR]:`, error);
+	console.trace(error);
+}
+
 function success<T>(data: T): ServerActionSuccess<T> {
 	return { success: true, data };
 }
 
 function failure(error: unknown): ServerActionFailure {
-	let message = 'An unknown error occurred';
-
 	if (error instanceof z.ZodError) {
-		console.error('[ZOD ERROR]:', error.errors);
-		message = error.errors.map((e) => e.message).join(', ');
+		logError('ZOD', error);
+		return {
+			success: false,
+			error: 'Invalid input data',
+		};
 	}
 
 	if (error instanceof Error) {
-		console.error('[ACTION ERROR]:', error.message);
-		console.trace(error);
-		message = error.message;
+		logError('SERVER', error);
+		return {
+			success: false,
+			error: error.message,
+		};
 	}
 
+	logError('UNHANDLED', error);
 	return {
 		success: false,
-		error: message,
+		error: 'An unknown error occurred',
 	};
 }
 
