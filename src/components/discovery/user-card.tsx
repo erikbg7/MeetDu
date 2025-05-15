@@ -1,19 +1,17 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { MapPin, LinkIcon, GitFork, Zap } from 'lucide-react';
 import { PublicProfile } from '@/server/db/schema';
-import { FollowUserAction } from '@/app/discovery/actions';
-import { FollowButton } from '@/components/discovery/follow-button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function UserCard({
 	user,
-	followUser,
+	children,
 }: {
 	user: PublicProfile;
-	followUser: FollowUserAction;
+	children?: React.ReactNode;
 }) {
 	return (
 		<Card className="flex h-full flex-col gap-0 overflow-hidden pt-0 transition-all hover:shadow-md">
@@ -81,9 +79,7 @@ export default function UserCard({
 				)}
 			</CardContent>
 
-			<CardFooter className="mt-auto pt-0">
-				<FollowButton username={user.username} onSubmit={followUser} />
-			</CardFooter>
+			<CardFooter className="mt-auto pt-0">{children}</CardFooter>
 		</Card>
 	);
 }

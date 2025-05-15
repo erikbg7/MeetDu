@@ -14,7 +14,7 @@ type Props = {
 	onSubmit: FollowUserAction;
 };
 
-export function FollowButton({ username, onSubmit }: Props) {
+export default function FollowButton({ username, onSubmit }: Props) {
 	const [isPending, startTransition] = useTransition();
 	const [isFollowing, setIsFollowing] = useState(false);
 
