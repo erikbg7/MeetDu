@@ -1,14 +1,9 @@
-import type { Metadata } from 'next';
-import {
-	ClerkProvider,
-	SignInButton,
-	SignUpButton,
-	SignedIn,
-	SignedOut,
-	UserButton,
-} from '@clerk/nextjs';
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import type { Metadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
+import { Geist, Geist_Mono } from 'next/font/google';
+import { Footer } from '@/components/footer';
+import { NavBar } from '@/components/navbar';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -36,21 +31,9 @@ export default function RootLayout({
 				<body
 					className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 				>
-					<header className="supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-16 w-full gap-4 border-b backdrop-blur">
-						<div className="container mx-auto flex h-16 w-full items-center justify-between p-4">
-							<div className="text-xl font-bold">MeetDu</div>
-							<div>
-								<SignedOut>
-									<SignInButton />
-									<SignUpButton />
-								</SignedOut>
-								<SignedIn>
-									<UserButton />
-								</SignedIn>
-							</div>
-						</div>
-					</header>
+					<NavBar />
 					{children}
+					<Footer />
 				</body>
 			</html>
 		</ClerkProvider>

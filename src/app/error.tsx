@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { ExternalLink } from 'lucide-react';
+import { ISSUES_URL } from '@/constants';
 
 export default function Error({ error }: { error: Error }) {
 	useEffect(() => {
@@ -36,7 +37,7 @@ export default function Error({ error }: { error: Error }) {
 						</div>
 
 						<a
-							href="https://github.com/erikbg7/meetdu/issues"
+							href={ISSUES_URL}
 							className="flex items-center justify-center gap-1 text-sm underline"
 						>
 							Are you able to reproduce this issue?
