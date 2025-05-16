@@ -32,9 +32,9 @@ export class KarmaService {
 
 	static async getTopUsers(
 		validator: (username: string) => Promise<boolean>,
-		blacklist: PublicProfile['username'][] = [],
-		profiles: PublicProfile[] = [],
-		amount = 8,
+		blacklist: PublicProfile['username'][],
+		profiles: PublicProfile[],
+		amount: number,
 	): Promise<PublicProfile[]> {
 		const topProfiles = await db
 			.select(publicProfileColumns)

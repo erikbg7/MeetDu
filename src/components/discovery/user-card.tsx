@@ -14,7 +14,7 @@ export default function UserCard({
 	return (
 		<Card className="flex h-full flex-col gap-0 overflow-hidden pt-0 transition-all hover:shadow-md">
 			<div className="relative flex flex-col items-center bg-gradient-to-b from-gray-50 to-white pt-8 pb-4">
-				<Avatar className="h-32 w-32 border-4 border-white shadow-lg">
+				<Avatar className="animate-fade-in h-32 w-32 rounded-full border-4 border-white shadow-lg">
 					<AvatarImage
 						src={user.avatar || '/placeholder.svg?height=128&width=128'}
 						alt={user.username}
@@ -25,7 +25,7 @@ export default function UserCard({
 					</AvatarFallback>
 				</Avatar>
 
-				<div className="absolute top-6 right-6">
+				<div className="animate-fade-in absolute top-6 right-6">
 					<Badge
 						variant="outline"
 						className="flex items-center gap-1 border-amber-200 bg-white px-3 py-1.5 text-amber-600 shadow-sm"
@@ -37,7 +37,7 @@ export default function UserCard({
 				</div>
 			</div>
 
-			<CardContent className="flex h-48 flex-col items-center justify-between pb-4">
+			<CardContent className="animate-fade-in flex h-48 flex-col items-center justify-between pb-4">
 				<div className="text-center">
 					<h3 className="mb-0.5 line-clamp-1 text-xl font-bold">{user.name}</h3>
 					<p className="text-muted-foreground mb-3 text-sm">@{user.username}</p>
@@ -49,7 +49,7 @@ export default function UserCard({
 					)}
 				</div>
 
-				<div>
+				<div className="animate-fade-in">
 					<div className="mb-4 flex justify-center gap-3">
 						{user.location && (
 							<Badge variant="secondary" className="flex items-center gap-1">

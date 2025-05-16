@@ -6,6 +6,7 @@ import { KarmaService } from '@/server/services/karma.service';
 import { GithubApiService } from '@/server/services/github.service';
 import { UserService } from '@/server/services/user.service';
 import { ServerActionResult, failure, success } from '@/lib/server-actions';
+import { DISCOVERY_CARDS_AMOUNT } from '@/constants';
 
 async function syncUserOnFirstLogin(): Promise<ServerActionResult<null>> {
 	try {
@@ -60,6 +61,8 @@ async function getTopUsers(): Promise<ServerActionResult<PublicProfile[]>> {
 		const topKarmaUsers = await KarmaService.getTopUsers(
 			githubApi.isFollowing.bind(githubApi),
 			[userService.username],
+			[],
+			DISCOVERY_CARDS_AMOUNT,
 		);
 
 		return success(topKarmaUsers);
