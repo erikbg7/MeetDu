@@ -1,5 +1,3 @@
-'use client';
-
 import { MapPin, LinkIcon, GitFork, Zap } from 'lucide-react';
 import { PublicProfile } from '@/server/db/schema';
 import { Badge } from '@/components/ui/badge';
@@ -39,44 +37,47 @@ export default function UserCard({
 				</div>
 			</div>
 
-			{/* User Info Section */}
-			<CardContent className="flex-grow pb-4 text-center">
-				<h3 className="mb-0.5 text-xl font-bold">{user.name}</h3>
-				<p className="text-muted-foreground mb-3 text-sm">@{user.username}</p>
+			<CardContent className="flex h-48 flex-col items-center justify-between pb-4">
+				<div className="text-center">
+					<h3 className="mb-0.5 line-clamp-1 text-xl font-bold">{user.name}</h3>
+					<p className="text-muted-foreground mb-3 text-sm">@{user.username}</p>
 
-				{user.bio && (
-					<p className="mx-auto mb-4 line-clamp-2 max-w-xs text-sm">
-						{user.bio}
-					</p>
-				)}
-
-				<div className="mb-4 flex flex-wrap justify-center gap-3">
-					{user.location && (
-						<Badge variant="secondary" className="flex items-center gap-1">
-							<MapPin className="h-3.5 w-3.5" />
-							{user.location}
-						</Badge>
+					{user.bio && (
+						<p className="mx-auto mb-4 line-clamp-2 max-w-xs text-sm">
+							{user.bio}
+						</p>
 					)}
-
-					<Badge variant="secondary" className="flex items-center gap-1">
-						<GitFork className="h-3.5 w-3.5" />
-						{user.repos} repos
-					</Badge>
 				</div>
 
-				{user.url && (
-					<div className="flex items-center justify-center text-sm">
-						<LinkIcon className="text-muted-foreground mr-1 h-3.5 w-3.5" />
-						<a
-							href={user.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-primary max-w-[200px] truncate hover:underline"
-						>
-							{user.url.replace(/^https?:\/\//, '')}
-						</a>
+				<div>
+					<div className="mb-4 flex justify-center gap-3">
+						{user.location && (
+							<Badge variant="secondary" className="flex items-center gap-1">
+								<MapPin className="h-3.5 w-3.5" />
+								{user.location}
+							</Badge>
+						)}
+
+						<Badge variant="secondary" className="flex items-center gap-1">
+							<GitFork className="h-3.5 w-3.5" />
+							{user.repos} repos
+						</Badge>
 					</div>
-				)}
+
+					{user.url && (
+						<div className="flex items-center justify-center text-sm">
+							<LinkIcon className="text-muted-foreground mr-1 h-3.5 w-3.5" />
+							<a
+								href={user.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-primary max-w-[200px] truncate hover:underline"
+							>
+								{user.url.replace(/^https?:\/\//, '')}
+							</a>
+						</div>
+					)}
+				</div>
 			</CardContent>
 
 			<CardFooter className="mt-auto pt-0">{children}</CardFooter>

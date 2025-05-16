@@ -36,14 +36,19 @@ export default function RootLayout({
 				<body
 					className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 				>
-					<header className="flex h-16 items-center justify-end gap-4 p-4">
-						<SignedOut>
-							<SignInButton />
-							<SignUpButton />
-						</SignedOut>
-						<SignedIn>
-							<UserButton />
-						</SignedIn>
+					<header className="supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-16 w-full gap-4 border-b backdrop-blur">
+						<div className="container mx-auto flex h-16 w-full items-center justify-between p-4">
+							<div className="text-xl font-bold">MeetDu</div>
+							<div>
+								<SignedOut>
+									<SignInButton />
+									<SignUpButton />
+								</SignedOut>
+								<SignedIn>
+									<UserButton />
+								</SignedIn>
+							</div>
+						</div>
 					</header>
 					{children}
 				</body>
