@@ -1,16 +1,16 @@
+import React from 'react';
 import { MapPin, LinkIcon, GitFork, Zap } from 'lucide-react';
 import { PublicProfile } from '@/server/db/schema';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-export default function UserCard({
-	user,
-	children,
-}: {
+type Props = {
 	user: PublicProfile;
 	children?: React.ReactNode;
-}) {
+};
+
+export default function UserCard({ user, children }: Props) {
 	return (
 		<Card className="flex h-full flex-col gap-0 overflow-hidden pt-0 transition-all hover:shadow-md">
 			<div className="relative flex flex-col items-center bg-gradient-to-b from-gray-50 to-white pt-8 pb-4">
