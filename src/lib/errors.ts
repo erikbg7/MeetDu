@@ -1,4 +1,5 @@
 export const SYNC_USER_ERROR = 'SyncUserError';
+export const SYNC_USER_NOT_FOUND = 'SyncUserNotFound';
 export const GET_TOP_USERS_ERROR = 'GetTopUsersError';
 
 export class SyncUserError extends Error {
@@ -6,6 +7,13 @@ export class SyncUserError extends Error {
 		super();
 		this.name = SYNC_USER_ERROR;
 		this.message = 'An error occurred while syncing user data';
+	}
+}
+export class SyncedUserNotFoundError extends Error {
+	constructor() {
+		super();
+		this.name = SYNC_USER_NOT_FOUND;
+		this.message = 'Synced user not found';
 	}
 }
 

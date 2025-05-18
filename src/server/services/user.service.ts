@@ -60,11 +60,11 @@ export class UserService {
 		return accessToken;
 	}
 
-	async setAsSynced() {
+	async setAsSynced(synced: boolean = true) {
 		await this.client.users.updateUser(this.user.id, {
 			privateMetadata: {
 				...this.user.privateMetadata,
-				synced: true,
+				synced,
 			},
 		});
 	}

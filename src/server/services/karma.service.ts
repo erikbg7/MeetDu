@@ -5,8 +5,14 @@ import {
 	PublicProfile,
 	publicProfileColumns,
 } from '@/server/db/schema';
+import { UserService } from '@/server/services/user.service';
 
 export class KarmaService {
+	static async handleNotFoundError() {
+		const userService = await UserService.init();
+		await userService.setAsSynced(false);
+	}
+
 	static async updateUsersKarma(followerId: string, followingUsername: string) {
 		return await db.transaction(async (tx) => {
 			// decrement karma of following
@@ -23,7 +29,7 @@ export class KarmaService {
 				.returning(publicProfileColumns);
 
 			if (!followerData) {
-				throw new Error('You are not synced');
+				await KarmaService.handleNotFoundError();
 			}
 
 			return followerData.karma;
