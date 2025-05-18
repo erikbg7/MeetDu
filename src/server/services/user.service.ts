@@ -72,7 +72,7 @@ export class UserService {
 	async createProfile(newProfile: ProfileInsert) {
 		const [createProfile] = await db
 			.insert(profile)
-			.values(newProfile)
+			.values({ ...newProfile, id: this.user.id })
 			.returning(getTableColumns(profile))
 			.onConflictDoNothing();
 
