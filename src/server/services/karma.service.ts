@@ -8,6 +8,19 @@ import {
 import { UserService } from '@/server/services/user.service';
 
 export class KarmaService {
+	static async getKarma(userId: string) {
+		const [user] = await db
+			.select({ karma: profile.karma })
+			.from(profile)
+			.where(eq(profile.id, userId));
+
+		if (!user) {
+			await KarmaService.handleNotFoundError();
+		}
+
+		return user?.karma || 0;
+	}
+
 	static async handleNotFoundError() {
 		const userService = await UserService.init();
 		await userService.setAsSynced(false);

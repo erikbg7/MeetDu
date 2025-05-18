@@ -51,6 +51,21 @@ async function followUser(
 	}
 }
 
+export type GetUserKarmaResult = {
+	userId: string;
+	karma: number;
+};
+async function getUserKarma(): Promise<GetUserKarmaResult> {
+	const userService = await UserService.init();
+
+	const karma = await KarmaService.getKarma(userService.userId);
+
+	return {
+		userId: userService.userId,
+		karma,
+	};
+}
+
 async function getTopUsers(): Promise<ServerActionResult<PublicProfile[]>> {
 	try {
 		const userService = await UserService.init();
@@ -101,4 +116,4 @@ export type SyncUserOnFirstLoginAction = typeof syncUserOnFirstLogin;
 export type FollowUserAction = typeof followUser;
 export type GetTopUsersAction = typeof getTopUsers;
 
-export { syncUserOnFirstLogin, followUser, getTopUsers };
+export { syncUserOnFirstLogin, followUser, getTopUsers, getUserKarma };
