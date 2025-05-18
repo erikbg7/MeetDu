@@ -71,6 +71,32 @@ async function getTopUsers(): Promise<ServerActionResult<PublicProfile[]>> {
 	}
 }
 
+// populate action can be used while testing to populate the database with real GitHub users
+// by default it get the first 20 followed users of the user 'dawsbot'
+// and creates a profile for each of them
+export async function populate(): Promise<ServerActionResult<null>> {
+	try {
+		const userService = await UserService.init();
+		const accessToken = await userService.getOauthToken();
+
+		const githubApi = new GithubApiService(accessToken);
+		const following = await githubApi.getFollowedUsers('dawsbot');
+
+		const followingProfiles = await Promise.all(
+			following.map((user) => {
+				return githubApi
+					.getProfileByUsername(user.login)
+					.then(GithubApiService.toProfileInsertWithRandomKarma);
+			}),
+		);
+
+		await Promise.all(followingProfiles.map(userService.createProfile));
+
+		return success(null);
+	} catch (error) {
+		return failure(error);
+	}
+}
 export type SyncUserOnFirstLoginAction = typeof syncUserOnFirstLogin;
 export type FollowUserAction = typeof followUser;
 export type GetTopUsersAction = typeof getTopUsers;

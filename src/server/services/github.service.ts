@@ -1,6 +1,10 @@
 import { Octokit } from '@octokit/rest';
 import { ProfileInsert } from '@/server/db/schema';
 
+type GetUserProfile = Awaited<
+	ReturnType<typeof GithubApiService.prototype.getUserProfile>
+>;
+
 export class GithubApiService {
 	private api: Octokit;
 
@@ -28,10 +32,10 @@ export class GithubApiService {
 		return res.data;
 	}
 
-	async getFollowedUsers() {
+	async getFollowedUsers(username: string, amount: number = 20) {
 		const res = await this.api.rest.users.listFollowingForUser({
-			username: 'dawsbot',
-			per_page: 20,
+			username,
+			per_page: amount,
 		});
 		if (res.status !== 200 || !res.data) {
 			throw new Error('Failed to fetch followed users');
@@ -65,11 +69,7 @@ export class GithubApiService {
 		}
 	}
 
-	static toProfileInsert(
-		profile: Awaited<
-			ReturnType<typeof GithubApiService.prototype.getUserProfile>
-		>,
-	): ProfileInsert {
+	static toProfileInsert(profile: GetUserProfile): ProfileInsert {
 		return {
 			id: String(profile.id),
 			githubId: profile.id,
@@ -80,7 +80,13 @@ export class GithubApiService {
 			url: profile.html_url || '',
 			avatar: profile.avatar_url || '',
 			repos: profile.public_repos || 0,
-			// karma: Math.floor(Math.random() * 15), // this is only for testing purposes
+		};
+	}
+
+	static toProfileInsertWithRandomKarma(profile: GetUserProfile) {
+		return {
+			...this.toProfileInsert(profile),
+			karma: Math.floor(Math.random() * 15),
 		};
 	}
 }
