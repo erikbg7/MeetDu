@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import { toast } from 'sonner';
 import { Zap } from 'lucide-react';
-import { UserButton } from '@clerk/nextjs';
+import { UserButton, useUser } from '@clerk/nextjs';
 import type { GetUserKarmaResult } from '@/app/discovery/actions';
 import useRealtimeUpdates from '@/hooks/use-realtime-updates';
 import {
@@ -15,19 +15,22 @@ import {
 import { KarmaEvent } from '@/server/db/schema';
 import { EventType } from '@/constants';
 
-export function UserKarma({
-	getKarmaPromise,
-}: {
+type Props = {
 	getKarmaPromise: Promise<GetUserKarmaResult>;
-}) {
+};
+
+export function UserKarma({ getKarmaPromise }: Props) {
 	// TODO: This request is performed without waiting for the user to be synced.
 	// First time a user logs in, we request the karma but user is not on the database yet.
 	const data = use(getKarmaPromise);
+	const { user } = useUser();
+
 	const [karma, setKarma] = useState(data.karma);
 	const isAnimating = false;
 	// const [isAnimating, setIsAnimating] = useState(false);
 
 	const handleKarmaNotificationEvent = (e: KarmaEvent) => {
+		console.log('Karma event received:', e);
 		if (e.type === EventType.INCREASE) {
 			setKarma((prev) => prev + 1);
 			toast.info('Followed successfully!', {
@@ -46,6 +49,8 @@ export function UserKarma({
 		channel: `userId:${data.userId}`,
 		onUpdate: handleKarmaNotificationEvent,
 	});
+
+	if (!data.userId || !user) return null;
 
 	return (
 		<div>

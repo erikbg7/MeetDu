@@ -35,6 +35,7 @@ export default function useRealtimeUpdates<T>({
 }: RealtimeUpdatesParams<T>) {
 	useEffect(() => {
 		console.log('Connecting to Supabase Realtime...');
+		console.log('Channel:', channel);
 
 		if (!channel) return;
 		if (!channel.split(':')[1]) return;
@@ -49,6 +50,7 @@ export default function useRealtimeUpdates<T>({
 
 		return () => {
 			// Unsubscribe from the channel
+			console.log('Unsubscribing from Supabase Realtime...');
 			supabase.removeChannel(realtimeChannel);
 		};
 	}, [channel]);
