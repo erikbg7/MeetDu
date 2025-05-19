@@ -8,6 +8,7 @@ import {
 } from '@/server/db/schema';
 import { UserService } from '@/server/services/user.service';
 import { EventType } from '@/constants';
+import { FollowUserError } from '@/lib/errors';
 
 export class KarmaService {
 	static async getKarma(userId: string) {
@@ -29,7 +30,7 @@ export class KarmaService {
 	}
 
 	static async updateUsersKarma(followerId: string, followedUsername: string) {
-		return await db.transaction(async (tx) => {
+		await db.transaction(async (tx) => {
 			// decrement karma of following
 			const [followingUser] = await tx
 				.update(profile)
@@ -44,8 +45,9 @@ export class KarmaService {
 				.where(eq(profile.id, followerId))
 				.returning({ id: profile.id });
 
-			if (!followingUser || !followerUser) {
+			if (!followingUser?.id || !followerUser?.id) {
 				await KarmaService.handleNotFoundError();
+				throw new FollowUserError();
 			}
 
 			// create karma event notifications for both users
@@ -60,6 +62,8 @@ export class KarmaService {
 				},
 			]);
 		});
+
+		return true;
 	}
 
 	static async getTopUsers(

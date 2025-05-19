@@ -43,7 +43,12 @@ async function followUser(
 		const githubApi = new GithubApiService(accessToken);
 		await githubApi.followUser(username);
 
-		await KarmaService.updateUsersKarma(userService.githubId, username);
+		const updated = await KarmaService.updateUsersKarma(
+			userService.githubId,
+			username,
+		);
+
+		if (!updated) githubApi.unfollowUser(username);
 
 		return success(null);
 	} catch (error) {

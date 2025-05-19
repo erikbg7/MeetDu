@@ -53,6 +53,16 @@ export class GithubApiService {
 		return res.data;
 	}
 
+	async unfollowUser(username: string) {
+		try {
+			const res = await this.api.rest.users.unfollow({ username });
+			return res.data;
+		} catch (e) {
+			console.log({ e });
+			// Must handle the error here, but we don't care about failure
+		}
+	}
+
 	async isFollowing(username: string) {
 		try {
 			const response =

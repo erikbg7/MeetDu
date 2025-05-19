@@ -24,3 +24,11 @@ export class GetTopUsersError extends Error {
 		this.message = 'An error occurred while fetching top users';
 	}
 }
+
+export class FollowUserError extends Error {
+	constructor() {
+		super();
+		this.name = 'FollowUserError';
+		this.message = 'An error occurred while following user';
+	}
+}
