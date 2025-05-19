@@ -1,11 +1,13 @@
 import { db } from '@/server/db';
 import { eq, sql, desc, notInArray } from 'drizzle-orm';
 import {
+	karmaEvent,
 	profile,
 	PublicProfile,
 	publicProfileColumns,
 } from '@/server/db/schema';
 import { UserService } from '@/server/services/user.service';
+import { EventType } from '@/constants';
 
 export class KarmaService {
 	static async getKarma(userId: string) {
@@ -26,26 +28,37 @@ export class KarmaService {
 		await userService.setAsSynced(false);
 	}
 
-	static async updateUsersKarma(followerId: string, followingUsername: string) {
+	static async updateUsersKarma(followerId: string, followedUsername: string) {
 		return await db.transaction(async (tx) => {
 			// decrement karma of following
-			await tx
+			const [followingUser] = await tx
 				.update(profile)
 				.set({ karma: sql`${profile.karma} - 1` })
-				.where(eq(profile.username, followingUsername));
+				.where(eq(profile.username, followedUsername))
+				.returning({ id: profile.id });
 
 			// increment karma of follower
-			const [followerData] = await tx
+			const [followerUser] = await tx
 				.update(profile)
 				.set({ karma: sql`${profile.karma} + 1` })
 				.where(eq(profile.id, followerId))
-				.returning(publicProfileColumns);
+				.returning({ id: profile.id });
 
-			if (!followerData) {
+			if (!followingUser || !followerUser) {
 				await KarmaService.handleNotFoundError();
 			}
 
-			return followerData.karma;
+			// create karma event notifications for both users
+			await db.insert(karmaEvent).values([
+				{
+					userId: followingUser.id,
+					type: EventType.DECREASE,
+				},
+				{
+					userId: followerUser.id,
+					type: EventType.INCREASE,
+				},
+			]);
 		});
 	}
 

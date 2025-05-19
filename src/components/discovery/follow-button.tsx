@@ -50,8 +50,6 @@ export default function FollowButton({ username, onSubmit }: Props) {
 			aria-label="Follow user"
 			aria-live="polite"
 		>
-			<button name="username" value={username}></button>
-
 			<Button
 				name="username"
 				value={username}

@@ -12,3 +12,8 @@ export enum AppRoute {
 	TERMS = '/terms',
 	PRIVACY = '/privacy',
 }
+
+export enum EventType {
+	INCREASE = 'increase',
+	DECREASE = 'decrease',
+}

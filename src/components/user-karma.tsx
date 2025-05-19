@@ -3,6 +3,7 @@
 import { use } from 'react';
 import type { GetUserKarmaResult } from '@/app/discovery/actions';
 import useRealtimeUpdates from '@/hooks/use-realtime-updates';
+import { KarmaEvent } from '@/server/db/schema';
 
 export function UserKarma({
 	getKarmaPromise,
@@ -11,8 +12,8 @@ export function UserKarma({
 }) {
 	const data = use(getKarmaPromise);
 
-	useRealtimeUpdates<any>({
-		channel: `topic:${data.userId}`,
+	useRealtimeUpdates<KarmaEvent>({
+		channel: `userId:${data.userId}`,
 		onUpdate: (data) => console.log({ data }),
 	});
 
