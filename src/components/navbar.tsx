@@ -20,15 +20,17 @@ export function NavBar() {
 					<span>MeetDu</span>
 				</div>
 				<div>
-					<Suspense fallback={<div>Loading...</div>}>
-						<UserKarma getKarmaPromise={getKarmaPromise} />
-					</Suspense>
 					<SignedOut>
 						<SignInButton />
 						<SignUpButton />
 					</SignedOut>
 					<SignedIn>
-						<UserButton />
+						<div className="flex items-center gap-4">
+							<Suspense fallback={<div>Loading...</div>}>
+								<UserKarma getKarmaPromise={getKarmaPromise} />
+							</Suspense>
+							<UserButton />
+						</div>
 					</SignedIn>
 				</div>
 			</div>
