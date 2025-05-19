@@ -3,6 +3,7 @@
 import { use, useState } from 'react';
 import { toast } from 'sonner';
 import { Zap } from 'lucide-react';
+import { UserButton } from '@clerk/nextjs';
 import type { GetUserKarmaResult } from '@/app/discovery/actions';
 import useRealtimeUpdates from '@/hooks/use-realtime-updates';
 import {
@@ -13,9 +14,6 @@ import {
 } from '@/components/ui/tooltip';
 import { KarmaEvent } from '@/server/db/schema';
 import { EventType } from '@/constants';
-
-
-
 
 export function UserKarma({
 	getKarmaPromise,
@@ -39,7 +37,7 @@ export function UserKarma({
 		if (e.type === EventType.DECREASE) {
 			setKarma((prev) => prev - 1);
 			toast.info('Someone has followed you!', {
-				description: 'We have taken -1 karma point to you.',
+				description: 'We have taken -1 karma point from you.',
 			});
 		}
 	};
@@ -55,21 +53,17 @@ export function UserKarma({
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							{/* <button
-								onClick={handleNotificationClick}
-								className={`flex cursor-pointer items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 shadow-sm transition-all ${isAnimating ? 'scale-110' : ''}`}
-								> */}
 							<div
-								className={`flex cursor-pointer items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 shadow-sm transition-all ${isAnimating ? 'scale-110' : ''}`}
+								className={`flex cursor-pointer items-center gap-2 rounded-full border bg-white px-3 py-1.5 shadow-sm transition-all ${isAnimating ? 'scale-110' : ''}`}
 							>
-								<Zap className="h-4 w-4 fill-amber-500 text-amber-500" />
 								<span
-									className={`font-bold text-amber-600 transition-all ${isAnimating ? 'text-green-600' : ''}`}
+									className={`flex items-center font-bold text-amber-600 transition-all ${isAnimating ? 'text-green-600' : ''}`}
 								>
+									<Zap className="h-4 w-4 fill-amber-500 text-amber-500" />
 									{karma}
 								</span>
+								<UserButton />
 							</div>
-							{/* </button> */}
 						</TooltipTrigger>
 						<TooltipContent side="bottom">
 							<div className="text-sm">
@@ -81,15 +75,6 @@ export function UserKarma({
 						</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
-				{/* Notification Badge
-				{notifications > 0 && (
-					<Badge
-						className="absolute -top-2 -right-2 flex h-5 min-w-5 animate-pulse items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white"
-						aria-label={`${notifications} new followers`}
-					>
-						{notifications}
-					</Badge>
-				)} */}
 			</div>
 		</div>
 	);
