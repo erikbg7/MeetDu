@@ -1,6 +1,5 @@
 'use client';
 
-import { toast } from 'sonner';
 import { Check, Loader } from 'lucide-react';
 import { useState, useTransition } from 'react';
 
@@ -32,7 +31,6 @@ export default function FollowButton({ username, onSubmit }: Props) {
 				.then((res) => {
 					if (res.success) {
 						setIsFollowing(true);
-						toast.success('Followed successfully');
 					} else {
 						throw new Error(res.error);
 					}
