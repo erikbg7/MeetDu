@@ -24,7 +24,7 @@ export default function Loading() {
 							/>
 						</div>
 
-						<CardContent className="flex h-48 flex-col items-center justify-between pb-4">
+						<CardContent className="flex h-40 flex-col items-center justify-between pb-4">
 							<div className={cn(loadingClass, 'mb-3 h-12 w-full')} />
 							<div className={cn(loadingClass, 'h-full w-full')} />
 						</CardContent>
