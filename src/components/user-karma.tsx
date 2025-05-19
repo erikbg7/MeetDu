@@ -30,7 +30,7 @@ export function UserKarma({
 	const handleKarmaNotificationEvent = (e: KarmaEvent) => {
 		if (e.type === EventType.INCREASE) {
 			setKarma((prev) => prev + 1);
-			toast.success('Followed successfully!', {
+			toast.info('Followed successfully!', {
 				description: 'You have received +1 karma point.',
 			});
 		}
@@ -69,7 +69,13 @@ export function UserKarma({
 							<div className="text-sm">
 								<p className="font-semibold">Your Karma: {karma}</p>
 								<p className="text-muted-foreground mt-1 text-xs">
-									Gain karma when other users follow you
+									1. You gain karma when you follow a user.
+								</p>
+								<p className="text-muted-foreground mt-1 text-xs">
+									2. You lose karma when a users follows you.
+								</p>
+								<p className="text-muted-foreground mt-1 text-xs">
+									3. The more karma, the more users will see your profile.
 								</p>
 							</div>
 						</TooltipContent>
