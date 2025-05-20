@@ -1,8 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 
-import Link from 'next/link';
+import Image from 'next/image';
 import { Suspense } from 'react';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Github, Users, Zap, Database, Bell } from 'lucide-react';
 import ConnectButton from '@/components/connect-button';
@@ -15,34 +14,35 @@ export default function HomePage() {
 				<ToastSequence />
 			</Suspense>
 			{/* HERO SECTION */}
-			<section className="bg-gradient-to-b from-blue-50 to-white py-20 md:py-28">
-				<div className="container mx-auto px-4 md:px-6">
-					<div className="flex flex-col items-center space-y-4 text-center md:space-y-6">
-						<div className="space-y-2">
-							<h1 className="text-4xl font-bold tracking-tighter md:text-6xl">
-								MeetDu <span className="text-amber-500">⚡</span>
-							</h1>
-							<p className="text-muted-foreground mx-auto max-w-[700px] text-xl md:text-2xl">
-								Grow while connecting with the best developer community
+			<section className="overflow-hidden bg-gradient-to-b from-blue-50 to-white py-12 md:py-20">
+				<div className="container px-4 md:px-16">
+					<div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
+						<div className="flex max-w-lg flex-col space-y-4 md:space-y-6">
+							<div className="space-y-2">
+								<h1 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl">
+									Our community is stronger together
+									<span className="text-amber-500">⚡</span>
+								</h1>
+							</div>
+							<p className="text-muted-foreground">
+								A mini-game designed to strengthen our community bonds and help
+								us grow together on GitHub. Follow others, earn karma, and get
+								discovered!
 							</p>
+							<div className="flex flex-col gap-4 sm:flex-row">
+								<ConnectButton />
+							</div>
 						</div>
-						<div className="flex flex-col gap-4 sm:flex-row">
-							<Button asChild size="lg" className="gap-2">
-								<Link href="/meet">
-									Get Started
-									<ArrowRight className="h-4 w-4" />
-								</Link>
-							</Button>
-							<Button asChild variant="outline" size="lg" className="gap-2">
-								<Link
-									href="https://github.com/midudev"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<Github className="h-4 w-4" />
-									View on GitHub
-								</Link>
-							</Button>
+						<div className="flex justify-center md:justify-end">
+							<div className="relative h-[300px] w-full max-w-md md:h-[400px] md:max-w-none lg:h-[500px]">
+								<Image
+									src="/meetdu-hero.png"
+									alt="Developers connecting through MeetDu"
+									fill
+									priority
+									className="object-contain"
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
