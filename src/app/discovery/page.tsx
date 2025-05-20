@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'; // allows headers, disables SSG
+
 import { GetTopUsersError, SyncUserError } from '@/lib/errors';
 import {
 	followUser,
