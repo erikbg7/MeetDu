@@ -36,7 +36,7 @@ export default function HomePage() {
 						<div className="flex justify-center md:justify-end">
 							<div className="relative h-[300px] w-full max-w-md md:h-[400px] md:max-w-none lg:h-[500px]">
 								<Image
-									src="/meetdu-hero.png"
+									src="/meetdu-hero.webp"
 									alt="Developers connecting through MeetDu"
 									fill
 									priority

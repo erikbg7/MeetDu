@@ -41,7 +41,7 @@ export default function RootLayout({
 						icons={{
 							info: (
 								<Image
-									src="/meetdu.png"
+									src="/meetdu.webp"
 									alt="icon"
 									width={48}
 									height={48}
