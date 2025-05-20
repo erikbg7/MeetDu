@@ -14,6 +14,12 @@ export function Footer() {
 						</p>
 					</div>
 
+					<div className="mb-4 md:mb-0">
+						<p className="text-muted-foreground text-center text-sm">
+							Made with 💜 by Erik BG
+						</p>
+					</div>
+
 					<nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
 						<a
 							href={ISSUES_URL}
