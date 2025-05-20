@@ -34,13 +34,13 @@ export function UserKarma({ getKarmaPromise }: Props) {
 		if (e.type === EventType.INCREASE) {
 			setKarma((prev) => prev + 1);
 			toast.info('Followed successfully!', {
-				description: 'You have received +1 karma point.',
+				description: 'You have received +1 karma point ⚡',
 			});
 		}
 		if (e.type === EventType.DECREASE) {
 			setKarma((prev) => prev - 1);
 			toast.info('Someone has followed you!', {
-				description: 'We have taken -1 karma point from you.',
+				description: 'We have taken -1 karma point from you ⚡',
 			});
 		}
 	};

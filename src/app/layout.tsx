@@ -1,11 +1,11 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import Image from 'next/image';
+import { Toaster } from 'sonner';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Footer } from '@/components/footer';
 import { NavBar } from '@/components/navbar';
-import { Toaster } from 'sonner';
-import { Zap } from 'lucide-react';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -38,7 +38,17 @@ export default function RootLayout({
 						position="top-right"
 						offset={{ top: 75 }}
 						mobileOffset={{ top: 75 }}
-						icons={{ info: <Zap /> }}
+						icons={{
+							info: (
+								<Image
+									src="/meetdu.png"
+									alt="icon"
+									width={48}
+									height={48}
+									style={{ objectFit: 'contain' }}
+								/>
+							),
+						}}
 					/>
 					<NavBar />
 					{children}

@@ -1,14 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
 
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Github, Users, Zap, Database, Bell } from 'lucide-react';
 import ConnectButton from '@/components/connect-button';
+import ToastSequence from '@/components/toast-sequence';
 
 export default function HomePage() {
 	return (
 		<div className="flex min-h-screen flex-col">
+			<Suspense>
+				<ToastSequence />
+			</Suspense>
 			{/* HERO SECTION */}
 			<section className="bg-gradient-to-b from-blue-50 to-white py-20 md:py-28">
 				<div className="container mx-auto px-4 md:px-6">
@@ -18,7 +23,7 @@ export default function HomePage() {
 								MeetDu <span className="text-amber-500">⚡</span>
 							</h1>
 							<p className="text-muted-foreground mx-auto max-w-[700px] text-xl md:text-2xl">
-								Connect with Midu's developer community in a fun way
+								Grow while connecting with the best developer community
 							</p>
 						</div>
 						<div className="flex flex-col gap-4 sm:flex-row">

@@ -133,4 +133,9 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	[data-icon] {
+		width: 2rem !important;
+		height: 2rem !important;
+	}
 }
