@@ -61,14 +61,19 @@ export type GetUserKarmaResult = {
 	karma: number;
 };
 async function getUserKarma(): Promise<GetUserKarmaResult> {
-	const userService = await UserService.init();
+	try {
+		const userService = await UserService.init();
 
-	const karma = await KarmaService.getKarma(userService.userId);
+		const karma = await KarmaService.getKarma(userService.userId);
 
-	return {
-		userId: userService.userId,
-		karma,
-	};
+		return {
+			userId: userService.userId,
+			karma,
+		};
+	} catch (error) {
+		console.error('Error fetching user karma:', error);
+		return { userId: '', karma: 0 };
+	}
 }
 
 async function getTopUsers(): Promise<ServerActionResult<PublicProfile[]>> {
