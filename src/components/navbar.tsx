@@ -1,8 +1,9 @@
 import { Suspense } from 'react';
 import Image from 'next/image';
-import { SignedIn, SignedOut, SignInButton, SignUpButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut } from '@clerk/nextjs';
 import { getUserKarma } from '@/app/discovery/actions';
 import { UserKarma } from '@/components/user-karma';
+import ConnectButton from '@/components/connect-button';
 
 export function NavBar() {
 	const getKarmaPromise = getUserKarma();
@@ -13,10 +14,9 @@ export function NavBar() {
 					<Image src="/meetdu.png" alt="Logo" width={52} height={52} />
 					<span className="text-2xl">MeetDu</span>
 				</div>
-				<div>
+				<div className="flex items-center gap-2">
 					<SignedOut>
-						<SignInButton />
-						<SignUpButton />
+						<ConnectButton />
 					</SignedOut>
 					<SignedIn>
 						<Suspense>

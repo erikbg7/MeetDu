@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Github, Users, Zap, Database, Bell } from 'lucide-react';
+import ConnectButton from '@/components/connect-button';
 
 export default function HomePage() {
 	return (
@@ -170,12 +171,12 @@ export default function HomePage() {
 							Strengthen the bonds between developers and help us grow together
 							on GitHub.
 						</p>
-						<Button asChild size="lg" className="gap-2">
-							<Link href="/meet">
+						<ConnectButton>
+							<span className="flex items-center gap-2">
 								Discover Developers
 								<ArrowRight className="h-4 w-4" />
-							</Link>
-						</Button>
+							</span>
+						</ConnectButton>
 					</div>
 				</div>
 			</section>
