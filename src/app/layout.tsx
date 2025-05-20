@@ -4,6 +4,8 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Footer } from '@/components/footer';
 import { NavBar } from '@/components/navbar';
+import { Toaster } from 'sonner';
+import { Zap } from 'lucide-react';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -31,6 +33,13 @@ export default function RootLayout({
 				<body
 					className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 				>
+					<Toaster
+						expand={true}
+						position="top-right"
+						offset={{ top: 75 }}
+						mobileOffset={{ top: 75 }}
+						icons={{ info: <Zap /> }}
+					/>
 					<NavBar />
 					{children}
 					<Footer />
