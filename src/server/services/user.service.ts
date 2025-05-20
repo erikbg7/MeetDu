@@ -80,4 +80,14 @@ export class UserService {
 
 		return createProfile;
 	}
+
+	async createExampleProfile(newProfile: ProfileInsert) {
+		const [createProfile] = await db
+			.insert(profile)
+			.values(newProfile)
+			.returning(getTableColumns(profile))
+			.onConflictDoNothing();
+
+		return createProfile;
+	}
 }

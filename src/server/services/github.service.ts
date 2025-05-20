@@ -95,7 +95,15 @@ export class GithubApiService {
 
 	static toProfileInsertWithRandomKarma(profile: GetUserProfile) {
 		return {
-			...this.toProfileInsert(profile),
+			id: String(profile.id),
+			githubId: profile.id,
+			username: profile.login || '',
+			name: profile.name || '',
+			repos: profile.public_repos || 0,
+			bio: profile.bio || '',
+			location: profile.location || '',
+			url: profile.html_url || '',
+			avatar: profile.avatar_url || '',
 			karma: Math.floor(Math.random() * 15),
 		};
 	}
