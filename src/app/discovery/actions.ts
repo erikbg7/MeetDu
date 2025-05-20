@@ -44,7 +44,7 @@ async function followUser(
 		await githubApi.followUser(username);
 
 		const updated = await KarmaService.updateUsersKarma(
-			userService.githubId,
+			userService.userId,
 			username,
 		);
 
