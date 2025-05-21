@@ -2,6 +2,7 @@
 
 import { Check, Loader } from 'lucide-react';
 import { useState, useTransition } from 'react';
+import { track } from '@vercel/analytics';
 
 import { cn, handleClientSideError } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,8 @@ export default function FollowButton({ username, onSubmit }: Props) {
 	const [isFollowing, setIsFollowing] = useState(false);
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		track('follow_user');
+
 		e.preventDefault();
 
 		if (isPending || isFollowing) return;
@@ -31,6 +34,7 @@ export default function FollowButton({ username, onSubmit }: Props) {
 				.then((res) => {
 					if (res.success) {
 						setIsFollowing(true);
+						track('follow_user:success');
 					} else {
 						throw new Error(res.error);
 					}
